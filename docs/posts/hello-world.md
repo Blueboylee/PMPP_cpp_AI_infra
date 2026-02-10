@@ -1,9 +1,11 @@
 ---
-layout: post
-title: "Hello World - 第一篇博客"
+title: Hello World - 第一篇博客
 date: 2026-02-10
-categories: [入门]
 ---
+
+# Hello World - 第一篇博客
+
+<p style="color: var(--vp-c-text-2); font-size: 14px;">📅 2026-02-10 &nbsp;·&nbsp; 🏷️ 入门</p>
 
 这是我的第一篇博客文章！
 

@@ -40,9 +40,10 @@
 # debug information files
 *.dwo
 
-# Jekyll
-_site/
-.sass-cache/
-.jekyll-cache/
-.jekyll-metadata
-Gemfile.lock
+# Node.js
+node_modules/
+package-lock.json
+
+# VitePress
+docs/.vitepress/dist/
+docs/.vitepress/cache/

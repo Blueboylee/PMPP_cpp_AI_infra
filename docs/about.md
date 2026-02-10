@@ -1,8 +1,4 @@
----
-layout: page
-title: About
-permalink: /about/
----
+# 关于
 
 这是一个关于 CUDA 并行编程（基于 PMPP 教材）与 AI 基础设施的学习项目。
 
