@@ -11,7 +11,7 @@ date: 2026-02-10
 
 ## 关于这个项目
 
-这个博客用来记录学习 CUDA 并行编程和 AI 基础设施的过程。主要参考教材是 *Programming Massively Parallel Processors (PMPP)*。
+这个博客用来系统记录 AI 基础设施 (AI Infra) 的学习过程，内容涵盖 CUDA、vLLM、NVIDIA Triton、OpenAI Triton、TensorRT 等全栈技术。从底层 GPU 编程到上层推理服务，逐步深入 AI Infra 的方方面面。
 
 ## 一个简单的 CUDA 示例
 
