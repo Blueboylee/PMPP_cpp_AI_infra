@@ -50,6 +50,21 @@
   </div>
 </a>
 
+<a class="paper-card" href="./sglang">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>SGLang: Efficient Execution of Structured Language Model Programs</h3>
+    <p class="paper-meta">Lianmin Zheng et al. · UC Berkeley & Stanford · 2024</p>
+    <p class="paper-desc">提出结构化生成语言 SGLang，通过 RadixAttention（KV Cache 自动复用）、压缩有限状态机（高速约束解码）和 API 推测执行三大优化，将复杂 LLM 程序加速最高 6.4 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">SGLang</span>
+      <span class="tag">RadixAttention</span>
+      <span class="tag">Constrained Decoding</span>
+      <span class="tag">LLM Programming</span>
+    </div>
+  </div>
+</a>
+
 </div>
 
 ::: tip 💡 持续更新中

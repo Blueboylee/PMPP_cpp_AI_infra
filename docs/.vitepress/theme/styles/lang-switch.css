@@ -1,0 +1,11 @@
+/* ===== 中英文切换：全局显示/隐藏规则 ===== */
+
+/* 默认显示中文，隐藏英文 */
+html[data-lang='zh'] .lang-en,
+html:not([data-lang]) .lang-en {
+  display: none !important;
+}
+
+html[data-lang='en'] .lang-zh {
+  display: none !important;
+}

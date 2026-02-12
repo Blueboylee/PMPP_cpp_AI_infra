@@ -36,6 +36,7 @@ export default defineConfig({
             { text: 'vLLM: PagedAttention', link: '/posts/inference/vllm-paper' },
             { text: 'TensorRT-LLM', link: '/posts/inference/tensorrt-llm' },
             { text: 'Triton Inference Server', link: '/posts/inference/triton-inference-server' },
+            { text: 'SGLang: 结构化生成语言', link: '/posts/inference/sglang' },
           ],
         },
       ],
