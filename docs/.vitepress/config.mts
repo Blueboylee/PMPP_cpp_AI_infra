@@ -51,6 +51,7 @@ export default defineConfig({
             { text: 'TensorRT-LLM', link: '/posts/inference/tensorrt-llm' },
             { text: 'Triton Inference Server', link: '/posts/inference/triton-inference-server' },
             { text: 'SGLang: 结构化生成语言', link: '/posts/inference/sglang' },
+            { text: 'FlashAttention: IO感知注意力', link: '/posts/inference/flash-attention' },
             { text: 'Clipper: 在线推理服务系统', link: '/posts/inference/clipper' },
           ],
         },

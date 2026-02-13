@@ -65,6 +65,21 @@
   </div>
 </a>
 
+<a class="paper-card" href="./flash-attention">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>FlashAttention: Fast and Memory-Efficient Exact Attention with IO-Awareness</h3>
+    <p class="paper-meta">Tri Dao et al. · Stanford University · NeurIPS 2022</p>
+    <p class="paper-desc">提出 IO 感知的精确注意力算法，通过分块计算（Tiling）和在线 Softmax 避免实体化 N² 注意力矩阵，将内存复杂度从 O(N²) 降至 O(N)，墙钟时间快 2-4 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">FlashAttention</span>
+      <span class="tag">IO-Aware</span>
+      <span class="tag">Tiling</span>
+      <span class="tag">Kernel Fusion</span>
+    </div>
+  </div>
+</a>
+
 <a class="paper-card" href="./clipper">
   <div class="paper-icon">📄</div>
   <div class="paper-body">
