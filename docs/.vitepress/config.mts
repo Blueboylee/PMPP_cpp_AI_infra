@@ -57,6 +57,15 @@ export default defineConfig({
           ],
         },
       ],
+      '/posts/training/': [
+        {
+          text: '分布式训练',
+          items: [
+            { text: '📚 文献列表', link: '/posts/training/' },
+            { text: 'ZeRO: 零冗余优化器', link: '/posts/training/deepspeed-zero' },
+          ],
+        },
+      ],
       '/posts/': [
         {
           text: '博客文章',

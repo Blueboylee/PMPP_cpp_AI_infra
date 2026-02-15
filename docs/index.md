@@ -29,6 +29,11 @@ features:
     icon: 🔧
     link: /posts/compiler/
     linkText: 查看全部笔记
+  - title: 分布式训练
+    details: 深入 DeepSpeed ZeRO、Megatron-LM、FSDP 等分布式训练框架，掌握大模型训练的内存优化与并行策略。
+    icon: 🏋️
+    link: /posts/training/
+    linkText: 查看全部文献
   - title: AI Infra 全链路
     details: 从硬件到软件栈，覆盖训练、推理、调度与部署的 AI 基础设施全貌。
     icon: 🧠
