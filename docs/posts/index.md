@@ -4,4 +4,4 @@
 
 ## 2026
 
-- [Hello World - 第一篇博客](./hello-world) <Badge type="info" text="2026-02-10" />
+- [DeepSpeed ZeRO 系列总结](./hello-world) <Badge type="info" text="2026-02-15" />

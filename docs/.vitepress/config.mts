@@ -72,7 +72,7 @@ export default defineConfig({
         {
           text: '博客文章',
           items: [
-            { text: 'Hello World - 第一篇博客', link: '/posts/hello-world' },
+            { text: 'DeepSpeed ZeRO 系列总结', link: '/posts/hello-world' },
           ],
         },
       ],

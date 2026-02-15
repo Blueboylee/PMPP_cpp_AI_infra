@@ -1,32 +1,99 @@
 ---
-title: Hello World - 第一篇博客
-date: 2026-02-10
+title: DeepSpeed ZeRO 系列总结
+date: 2026-02-15
 ---
 
-# Hello World - 第一篇博客
+# DeepSpeed ZeRO 系列总结
 
-<p style="color: var(--vp-c-text-2); font-size: 14px;">📅 2026-02-10 &nbsp;·&nbsp; 🏷️ 入门</p>
+<p style="color: var(--vp-c-text-2); font-size: 14px;">
+2026-02-15 &nbsp;·&nbsp; 分布式训练 &nbsp;·&nbsp; 知识总结
+</p>
 
-这是我的第一篇博客文章！
+DeepSpeed ZeRO 系列共三篇论文，解决的核心问题是：**大模型训练的 GPU 显存不够用**。三篇论文层层递进，逐步突破内存瓶颈。
 
-## 关于这个项目
+---
 
-这个博客用来系统记录 AI 基础设施 (AI Infra) 的学习过程，内容涵盖 CUDA、vLLM、NVIDIA Triton、OpenAI Triton、TensorRT 等全栈技术。从底层 GPU 编程到上层推理服务，逐步深入 AI Infra 的方方面面。
+## 问题背景
 
-## 一个简单的 CUDA 示例
+混合精度 + Adam 训练一个 \(\Psi\) 参数的模型，每参数需要 **16 字节** 模型状态：
 
-```cpp
-#include <stdio.h>
+| 组件 | 精度 | 每参数字节 | 占比 |
+|------|------|----------|------|
+| 参数 | fp16 | 2 B | 12.5% |
+| 梯度 | fp16 | 2 B | 12.5% |
+| 优化器状态（fp32 参数副本 + 动量 + 方差） | fp32 | 12 B | **75%** |
 
-__global__ void helloKernel() {
-    printf("Hello from GPU thread %d!\n", threadIdx.x);
-}
+标准数据并行（DP）中，每张 GPU 都存一份 **完整的** 16Ψ 字节——纯粹的冗余浪费。
 
-int main() {
-    helloKernel<<<1, 10>>>();
-    cudaDeviceSynchronize();
-    return 0;
-}
+---
+
+## ZeRO（SC 2020）—— GPU 间消除冗余
+
+**核心方法**：把模型状态 **分片（Partition）** 到多张 GPU，每卡只存 \(1/N_d\)（\(N_d\) = GPU 数量），需要时通过集合通信临时聚合。
+
+三个递进阶段：
+
+| 阶段 | 分片内容 | 每卡内存 | 通信量 |
+|------|---------|---------|--------|
+| ZeRO-1 | 优化器状态 | \(4\Psi + 12\Psi/N_d\) → 约 **4x 节省** | 与标准 DP 相同 |
+| ZeRO-2 | + 梯度 | \(2\Psi + 14\Psi/N_d\) → 约 **8x 节省** | 与标准 DP 相同 |
+| ZeRO-3 | + 参数 | \(16\Psi/N_d\) → **线性扩展** | 多 50% |
+
+关键洞察：ZeRO-1/2 的通信量与标准 DP **完全一样**（AllReduce = Reduce-Scatter + AllGather，只是 AllGather 的时机从"聚合梯度后"变为"更新参数后"）。
+
+> 详细精读：[ZeRO: 零冗余优化器](/posts/training/deepspeed-zero)
+
+---
+
+## ZeRO-Offload（ATC 2021）—— 卸载到 CPU
+
+**解决的新问题**：ZeRO 的内存节省依赖 GPU 数量，单卡场景无能为力。
+
+**核心方法**：通过 **数据流图分析** 推导最优卸载策略——将梯度 + 优化器状态 + Adam 更新卸载到 CPU，参数留在 GPU。
+
+| 留在 GPU | 卸载到 CPU | 为什么这样分 |
+|---------|-----------|-------------|
+| fp16 参数（2Ψ） | fp32 参数+动量+方差+梯度（16Ψ） | 前向/反向是计算密集型→留 GPU；Adam 是逐元素操作→CPU 能胜任 |
+
+三个关键优化：
+- **高效 CPU Adam**：SIMD 向量化，比 PyTorch CPU 实现快 6x
+- **一步延迟参数更新**：CPU 做 Adam 时 GPU 用旧参数先跑下一步 forward，流水线重叠
+- **梯度流式传输**：边算边传，不等整个反向传播结束
+
+效果：单张 V100 从训练 ~1.4B 模型提升到 **~13B**（约 10 倍）。
+
+> 详细精读：[ZeRO-Offload: 异构卸载训练](/posts/training/zero-offload)
+
+---
+
+## ZeRO-Infinity（SC 2021）—— 扩展到 NVMe SSD
+
+**解决的新问题**：超大模型（100B+）连 CPU 内存都放不下。
+
+**核心方法**：构建 **GPU → CPU → NVMe** 三级存储卸载引擎，所有模型状态可以持久存储在 NVMe SSD 上。
+
+五个关键技术：
+
+1. **Infinity Offload Engine**：统一管理三级存储，任何数据可放任何层级
+2. **带宽中心化分片**：保证每个 NVMe I/O 块足够大（≥512KB），避免小块随机 I/O 的带宽灾难
+3. **四路重叠流水线**：NVMe 读取 / PCIe 传输 / GPU 间通信 / GPU 计算同时进行
+4. **CPU 内存作为缓存**：预取未来 2-3 层参数到 CPU，零缓存未命中
+5. **Linux AIO + 多盘并行**：深度 I/O 队列 + 16 盘 RAID-0 聚合 ~48 GB/s 带宽
+
+效果：512 张 V100 成功训练 **32T 参数** 模型；单节点可训练模型从 14B 提升到 **1.6T**（100 倍+）。
+
+> 详细精读：[ZeRO-Infinity: NVMe 极限扩展](/posts/training/zero-infinity)
+
+---
+
+## 三篇论文的统一视角
+
+```
+存储层级利用的演进:
+
+ZeRO:          [GPU₀ ←→ GPU₁ ←→ ... ←→ GPUₙ]    消除 GPU 间冗余
+ZeRO-Offload:  [GPU] ←PCIe→ [CPU]                 利用 CPU 内存
+ZeRO-Infinity: [GPU] ←PCIe→ [CPU] ←AIO→ [NVMe]   利用一切存储
 ```
 
-后续会持续更新学习笔记，敬请关注！
+**一致的哲学**：不要把所有数据都放在最贵的存储里，让数据在正确的时间出现在正确的位置。
