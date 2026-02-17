@@ -155,6 +155,21 @@
   </div>
 </a>
 
+<a class="paper-card" href="./distserve">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving</h3>
+    <p class="paper-meta">Yinmin Zhong et al. · 北京大学 & UCSD · OSDI 2024</p>
+    <p class="paper-desc">将 LLM 推理的 Prefill 和 Decoding 阶段解耦到不同 GPU，消除两阶段互相干扰，独立优化资源分配与并行策略，在满足 TTFT/TPOT 双重 SLO 下 Goodput 提升 7.4 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">Disaggregation</span>
+      <span class="tag">Prefill-Decode</span>
+      <span class="tag">Goodput</span>
+      <span class="tag">SLO</span>
+    </div>
+  </div>
+</a>
+
 </div>
 
 ::: tip 💡 持续更新中

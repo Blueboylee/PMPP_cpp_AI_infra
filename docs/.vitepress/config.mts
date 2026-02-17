@@ -58,6 +58,7 @@ export default defineConfig({
             { text: 'Speculative Decoding: 投机解码', link: '/posts/inference/speculative-decoding' },
             { text: 'Flash-Decoding: 长上下文解码加速', link: '/posts/inference/flash-decoding' },
             { text: 'FlashDecoding++: 异步解码加速', link: '/posts/inference/flash-decoding-pp' },
+            { text: 'DistServe: Prefill-Decode 解耦', link: '/posts/inference/distserve' },
           ],
         },
       ],
