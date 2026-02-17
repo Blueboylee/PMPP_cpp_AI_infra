@@ -95,6 +95,66 @@
   </div>
 </a>
 
+<a class="paper-card" href="./smoothquant">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>SmoothQuant: Accurate and Efficient Post-Training Quantization for Large Language Models</h3>
+    <p class="paper-meta">Guangxuan Xiao et al. · MIT & NVIDIA · ICML 2023</p>
+    <p class="paper-desc">通过数学等价的平滑变换将激活值中的离群值迁移到权重上，实现 W8A8 全量化 INT8 推理，在 OPT-175B 上精度损失不到 1%，推理加速 1.56 倍，显存节省近 2 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">Quantization</span>
+      <span class="tag">INT8</span>
+      <span class="tag">Post-Training</span>
+      <span class="tag">Outlier Migration</span>
+    </div>
+  </div>
+</a>
+
+<a class="paper-card" href="./speculative-decoding">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>Fast Inference from Transformers via Speculative Decoding</h3>
+    <p class="paper-meta">Yaniv Leviathan et al. · Google Research · ICML 2023</p>
+    <p class="paper-desc">用小模型猜测、大模型并行验证的方式无损加速自回归解码，通过精心设计的拒绝采样保证输出分布与原始大模型完全一致，实现 2-3 倍推理加速。</p>
+    <div class="paper-tags">
+      <span class="tag">Speculative Decoding</span>
+      <span class="tag">Rejection Sampling</span>
+      <span class="tag">Lossless Acceleration</span>
+      <span class="tag">Autoregressive</span>
+    </div>
+  </div>
+</a>
+
+<a class="paper-card" href="./flash-decoding">
+  <div class="paper-icon">📝</div>
+  <div class="paper-body">
+    <h3>Flash-Decoding for Long-Context Inference</h3>
+    <p class="paper-meta">Tri Dao et al. · Stanford CRFM · 2023 Blog</p>
+    <p class="paper-desc">在 FlashAttention 基础上增加 KV 序列长度维度的并行拆分，通过 log-sum-exp 归约合并各分块结果，让解码阶段注意力计算充分利用 GPU，长序列端到端加速 8 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">Flash-Decoding</span>
+      <span class="tag">KV Split</span>
+      <span class="tag">GPU Utilization</span>
+      <span class="tag">Long Context</span>
+    </div>
+  </div>
+</a>
+
+<a class="paper-card" href="./flash-decoding-pp">
+  <div class="paper-icon">📄</div>
+  <div class="paper-body">
+    <h3>FlashDecoding++: Faster Large Language Model Inference on GPUs</h3>
+    <p class="paper-meta">Ke Hong et al. · 清华大学 & 上交 · arXiv 2023</p>
+    <p class="paper-desc">通过统一最大值实现异步 Softmax 消除 ~20% 同步开销、pad8+双缓冲优化扁平 GEMM、启发式数据流自适应硬件，在 Flash-Decoding 基础上端到端再加速 1.37 倍。</p>
+    <div class="paper-tags">
+      <span class="tag">Async Softmax</span>
+      <span class="tag">Flat GEMM</span>
+      <span class="tag">Double Buffering</span>
+      <span class="tag">Cross-Hardware</span>
+    </div>
+  </div>
+</a>
+
 </div>
 
 ::: tip 💡 持续更新中
