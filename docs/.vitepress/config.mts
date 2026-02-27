@@ -110,6 +110,7 @@ export default defineConfig({
           text: '博客文章',
           items: [
             { text: 'DeepSpeed ZeRO 系列总结', link: '/posts/hello-world' },
+            { text: 'NCCL Ring / Tree 算法与拓扑自适应', link: '/posts/nccl-topology-ring-tree' },
           ],
         },
       ],
